@@ -1,12 +1,14 @@
 # jeff-guard-multilang
 
+**[Русская версия](README.ru.md)**
+
 [![Base](https://img.shields.io/badge/base-Jeff--Qwen3.5--0.8B-blue)](https://huggingface.co/mstrasser/Jeff-Qwen3.5-0.8B)
 [![LoRA](https://img.shields.io/badge/LoRA-10.5M%20params-green)](model/)
 [![Languages](https://img.shields.io/badge/languages-12-orange)](docs/01-dataset.md)
 [![Test acc](https://img.shields.io/badge/test%20acc-0.99-brightgreen)](results/REPORT.md)
 [![Agentic recall](https://img.shields.io/badge/agentic%20recall-1.00-brightgreen)](results/REPORT.md)
 [![Model license](https://img.shields.io/badge/model%20license-Apache--2.0-lightgrey)](model/)
-[![Code license](https://img.shields.io/badge/code%20license-MIT-lightgrey)](#лицензии)
+[![Code license](https://img.shields.io/badge/code%20license-MIT-lightgrey)](#licenses)
 
 A tiny, fast **prompt-injection guard** built on the
 [Jeff](https://github.com/firelex/jeff) System One decision model.
@@ -14,17 +16,17 @@ It screens any text your AI agent is about to read - a user task, a tool
 result, an email, a document - and answers in **one forward pass
 (~20 ms on an RTX 4090)**, with calibrated probabilities and no generated text:
 
-1. **`attack`** (yes/no): is this text trying to take control of the model?
+1. **`attack`** (yes/no): is this text trying to take control of the model
+   (override instructions, drop safety rules, leak data)?
 2. **`kind`**: benign / direct_injection / indirect_injection / jailbreak / exfiltration.
 
-Trained as a 10.5M-parameter LoRA on a custom **103K-row corpus in 12
-languages** (English core + ru, zh, de, fr, es, ja, ko, pt, it, ar, hi, tr),
-with a dedicated slice for **agentic / indirect injections** (InjecAgent,
-BIPIA, LLMail-Inject) - attacks hidden in tool outputs and documents, the
-primary threat when routing tasks to AI agents.
+Trained as a 10.5M-parameter LoRA (r=16, alpha=32) on a custom **103K-row
+corpus in 12 languages** (English core + ru, zh, de, fr, es, ja, ko, pt, it,
+ar, hi, tr), with a dedicated slice for **agentic / indirect injections**
+(InjecAgent, BIPIA, LLMail-Inject) - attacks hidden in tool outputs and
+documents, the primary threat when routing tasks to AI agents.
 
-**Headline results** (threshold 0.5, full matrix in
-[results/REPORT.md](results/REPORT.md)):
+## Results (threshold 0.5; acc / recall / FPR)
 
 | Eval set | mstrasser guard | **this model** | kev-0.8b |
 |-|-|-|-|
@@ -34,29 +36,19 @@ primary threat when routing tasks to AI agents.
 | zh, de, fr, es, ja (rec) | 0.42-0.75 | **0.96-1.00** | 0.58-0.82 |
 | sentinel (obfuscated) | 0.76 / 0.68 / 0.000 | **0.98 / 0.97 / 0.000** | 0.71 / 0.62 / 0.005 |
 
-(acc / recall / FPR). Known weak spots: overtriggering on hard negatives
-(NotInject FPR 0.23), Mosscap coverage (0.59) - see
-[docs/03-results.md](docs/03-results.md) for honest caveats.
+Full five-candidate matrix: [results/REPORT.md](results/REPORT.md).
+Known weak spots: overtriggering on hard negatives (NotInject FPR 0.23),
+Mosscap coverage (0.59) - honest caveats in
+[docs/03-results.md](docs/03-results.md).
 
----
-
-# jeff-guard-multilang (RU)
-
-Маленькая (0.8B backbone + 10.5M LoRA) модель-фильтр, проверяющая текст
-(задачу пользователя, результат инструмента, письмо, документ) на попытку
-промпт-инъекции **за один forward pass (~20 мс на RTX 4090)**, без генерации
-текста. Построена по рецепту [firelex/jeff](https://github.com/firelex/jeff)
-на собственном корпусе из 103K размеченных текстов на 12 языках
-(см. `docs/01-dataset.md`), включая агентский срез indirect-инъекций -
-главную угрозу при роутинге задач AI-агентам.
-
-## Быстрый старт
+## Quick start
 
 ```bash
-# сервер из репозитория jeff (https://github.com/firelex/jeff)
+# server from the jeff repository (https://github.com/firelex/jeff)
 cd jeff && uv sync --no-default-groups --extra lora --extra cuda
-# база Jeff v1.2 рядом, этот адаптер - в каталоге adapters/ (уже лежит симлинк ours -> ../model)
-JEFF_CHECKPOINT=<Jeff-Qwen3.5-0.8B-v1.2> JEFF_ADAPTERS=<путь>/adapters PORT=8765 \
+# Jeff v1.2 base checkpoint next to it; this adapter goes into adapters/
+# (the repo ships an `ours -> ../model` symlink for exactly that)
+JEFF_CHECKPOINT=<Jeff-Qwen3.5-0.8B-v1.2> JEFF_ADAPTERS=<path>/adapters PORT=8765 \
   uv run --no-default-groups --extra lora --extra cuda jeff-serve
 ```
 
@@ -74,28 +66,28 @@ curl -s localhost:8765/v1/systemone -H 'content-type: application/json' -d '{
   }}'
 ```
 
-Точные формулировки вопросов и критерии - в `model/decision_config.json` и
-`compare_guards.py` (QUESTIONS). Формулировки часть модели: она обучалась
-и калибровалась на них.
+Exact question wordings and criteria live in `model/decision_config.json`
+and `compare_guards.py` (QUESTIONS). They are part of the model: it was
+trained and calibrated on them.
 
-## Состав репозитория
+## Repository layout
 
-| Путь | Содержание |
+| Path | Contents |
 |-|-|
-| `model/` | адаптер (40.9 МБ) + readout + decision_config - сама модель |
-| `data/` | корпус: train (103K), val/test, 14 eval-наборов |
-| `docs/` | 01 датасет, 02 обучение, 03 результаты, 04 экстраполяция на клонов Jev |
-| скрипты | build_dataset/build_v2 (сборка), translate_* (перевод), prepare_train (jeff-формат), train_guard_lora.sh, merge_ours.py, compare_guards.py, eval_guard.py |
-| `results/REPORT.md` | матрица сравнения пяти кандидатов |
-| `adapters/` | симлинки для jeff-serve |
+| `model/` | the adapter (40.9 MB) + readout + decision_config - the model itself |
+| `data/` | corpus: train (103K), val/test, 14 eval sets |
+| `docs/` | 01 dataset, 02 training, 03 results, 04 extrapolation to Jev-family clones |
+| scripts | build_dataset/build_v2 (corpus), translate_* (translation), prepare_train (jeff format), train_guard_lora.sh, merge_ours.py, compare_guards.py, eval_guard.py |
+| `results/REPORT.md` | five-candidate comparison matrix |
+| `adapters/` | symlinks for jeff-serve |
 
-Воспроизводимое и тяжелое (скачанные исходники, jeff-сплиты, посстрочные
-результаты) исключено из git (см. `.gitignore`).
+Heavy and reproducible artifacts (downloaded sources, jeff splits, per-row
+results) are excluded from git (see `.gitignore`).
 
-## Лицензии
+## Licenses
 
-Код скриптов - MIT. Адаптер - Apache 2.0 (по наследству от Jeff; веса
-Qwen3.5 - Apache 2.0). Данные - компиляция публичных датасетов; лицензии
-источников и предупреждения (CC-BY-NC-SA, CC-BY-SA компоненты) -
-в `docs/01-dataset.md`. Переведенная часть - машинный перевод тех же строк
-(локальная модель ornith-1.5-35b), наследует лицензии оригиналов.
+Scripts - MIT. Adapter - Apache 2.0 (inherited from Jeff; Qwen3.5 weights -
+Apache 2.0). Data - a compilation of public datasets; source licenses and
+warnings (CC-BY-NC-SA, CC-BY-SA components) in `docs/01-dataset.md`. The
+translated part is a machine translation of the same rows (local
+ornith-1.5-35b model) and inherits the original licenses.
