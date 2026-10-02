@@ -86,8 +86,10 @@ results) are excluded from git (see `.gitignore`).
 
 ## Licenses
 
-Scripts - MIT. Adapter - Apache 2.0 (inherited from Jeff; Qwen3.5 weights -
-Apache 2.0). Data - a compilation of public datasets; source licenses and
-warnings (CC-BY-NC-SA, CC-BY-SA components) in `docs/01-dataset.md`. The
-translated part is a machine translation of the same rows (local
-ornith-1.5-35b model) and inherits the original licenses.
+Scripts and documentation - **MIT** (root `LICENSE`). Model adapter -
+**Apache 2.0** (`model/LICENSE`, with upstream attribution in `model/NOTICE`:
+Jeff by firelex, AutoJev by Denis Yarats, Qwen3.5 by Alibaba), inherited
+from Jeff and Qwen3.5 weights. Data - a compilation of public datasets;
+source licenses and warnings (CC-BY-NC-SA, CC-BY-SA components) in
+`docs/01-dataset.md`. The translated part is a machine translation of the
+same rows (local ornith-1.5-35b model) and inherits the original licenses.

@@ -19,12 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
--------------------------------------------------------------------------------
-
-NOTE: This license covers the scripts and documentation in this repository.
-The model adapter in `model/` is licensed separately under the Apache
-License 2.0 (see `model/LICENSE`), inheriting from the Jeff project
-(mstrasser/Jeff-Qwen3.5-0.8B, Apache 2.0) and Qwen3.5 weights (Apache 2.0).
-The datasets in `data/` are a compilation of public datasets; each source
-retains its own license (see `docs/01-dataset.md`).
