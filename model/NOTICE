@@ -1,0 +1,11 @@
+jeff-guard-multilang - model adapter
+Copyright 2026 Roman Kudriavsky (devpilgrin)
+
+This product includes a LoRA adapter trained on top of:
+
+- Jeff (mstrasser/Jeff-Qwen3.5-0.8B v1.2), weights Apache 2.0,
+  code MIT - https://github.com/firelex/jeff
+  Jeff began as a fork of AutoJev by Denis Yarats (MIT license),
+  and keeps its original copyright notice.
+- Qwen3.5 base model (Qwen/Qwen3.5-0.8B), Apache 2.0 -
+  https://huggingface.co/Qwen/Qwen3.5-0.8B
