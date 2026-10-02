@@ -30,6 +30,7 @@ tags:
   - multilingual
   - ai-agents
 datasets:
+  - RomanKudriavskii/jeff-guard-multilang-dataset
   - Abdennebi/shieldlm-prompt-injection
   - leolee99/NotInject
 ---
@@ -50,7 +51,8 @@ and no generated text:
 Trained on a custom **103K-row corpus in 12 languages** with a dedicated
 slice for **agentic / indirect injections** (InjecAgent, BIPIA,
 LLMail-Inject) - attacks hidden in tool outputs and documents, the primary
-threat when routing tasks to AI agents.
+threat when routing tasks to AI agents. The corpus is published separately:
+[RomanKudriavskii/jeff-guard-multilang-dataset](https://huggingface.co/datasets/RomanKudriavskii/jeff-guard-multilang-dataset).
 
 Project repository (corpus, training recipe, full docs):
 [github.com/devpilgrin/jeff-guard-multilang](https://github.com/devpilgrin/jeff-guard-multilang)
