@@ -29,6 +29,8 @@ documents, the primary threat when routing tasks to AI agents.
 
 ## Results (threshold 0.5; acc / recall / FPR)
 
+Headline:
+
 | Eval set | mstrasser guard | **this model** | kev-0.8b |
 |-|-|-|-|
 | test EN (8.1K) | 0.85 / 0.66 / 0.044 | **0.99 / 0.99 / 0.007** | 0.68 / 0.62 / 0.289 |
@@ -37,7 +39,42 @@ documents, the primary threat when routing tasks to AI agents.
 | zh, de, fr, es, ja (rec) | 0.42-0.75 | **0.96-1.00** | 0.58-0.82 |
 | sentinel (obfuscated) | 0.76 / 0.68 / 0.000 | **0.98 / 0.97 / 0.000** | 0.71 / 0.62 / 0.005 |
 
-Full five-candidate matrix: [results/REPORT.md](results/REPORT.md).
+Full five-candidate matrix (kev, reference guard adapter/merged, this model
+adapter/merged), all eval sets:
+
+### Core (EN)
+
+| set | kev | guard (adapter) | guard (merged) | **ours (adapter)** | **ours (merged)** |
+|-|-|-|-|-|-|
+| test (8.1K) acc | 0.68 | 0.85 | 0.85 | **0.99** | **0.99** |
+| test recall | 0.62 | 0.66 | 0.66 | **0.99** | **0.98** |
+| test FPR | 0.289 | 0.043 | 0.044 | **0.007** | **0.007** |
+| test kind | 0.21 | 0.38 | 0.38 | **0.95** | **0.95** |
+
+### Languages (acc / recall / FPR)
+
+| set | kev | guard (both) | **ours (both)** |
+|-|-|-|-|
+| ru | 0.70/0.64/0.191 | 0.68/0.51/0.000 | **0.97/0.98/0.032** |
+| zh | 0.78/0.82/0.281 | 0.82/0.75/0.062 | **0.98/0.96/0.000** |
+| de | 0.68/0.70/0.381 | 0.68/0.62/0.143 | **1.00/1.00/0.000** |
+| fr | 0.72/0.76/0.351 | 0.67/0.47/0.027 | **0.96/0.97/0.054** |
+| es | 0.75/0.75/0.242 | 0.71/0.56/0.030 | **0.98/0.97/0.000** |
+| ja | 0.63/0.58/0.281 | 0.63/0.42/0.000 | **0.99/0.98/0.000** |
+
+### Special sets
+
+| set | kev | guard (both) | **ours (both)** |
+|-|-|-|-|
+| agentic indirect (158) | 0.87/0.87/0 | 0.35/0.35/0 | **1.00/1.00/0** |
+| NotInject FPR (338) | 0.180 | 0.180-0.186 | 0.231-0.234 ⚠ |
+| neuralchemy (939) | 0.82/0.78/0.115 | 0.88/0.83/0.040 | **0.96/0.97/0.046** |
+| sentinel (5.1K) | 0.71/0.62/0.005 | 0.76/0.68/0.000 | **0.98/0.97/0.000** |
+| gandalf (their train) | 0.67 | 1.00 | 1.00 |
+| mosscap (their train) | 0.49 | 0.79 | 0.59 ⚠ |
+
+Full five-candidate matrix as a single document:
+[results/REPORT.md](results/REPORT.md).
 Known weak spots: overtriggering on hard negatives (NotInject FPR 0.23),
 Mosscap coverage (0.59) - honest caveats in
 [docs/03-results.md](docs/03-results.md).
