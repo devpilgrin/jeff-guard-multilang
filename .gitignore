@@ -1,0 +1,7 @@
+# Временные и воспроизводимые артефакты (не для git)
+.temp/
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+adapters/guard
