@@ -3,6 +3,7 @@
 **[Русская версия](README.ru.md)**
 
 [![Base](https://img.shields.io/badge/base-Jeff--Qwen3.5--0.8B-blue)](https://huggingface.co/mstrasser/Jeff-Qwen3.5-0.8B)
+[![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20HF-jeff--guard--multilang-yellow)](https://huggingface.co/RomanKudriavskii/jeff-guard-multilang)
 [![LoRA](https://img.shields.io/badge/LoRA-10.5M%20params-green)](model/)
 [![Languages](https://img.shields.io/badge/languages-12-orange)](docs/01-dataset.md)
 [![Test acc](https://img.shields.io/badge/test%20acc-0.99-brightgreen)](results/REPORT.md)
